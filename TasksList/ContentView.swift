@@ -14,21 +14,26 @@ struct Item: Identifiable, Hashable {
     var isDone: Bool
 }
 
-class ListItem: ObservableObject {
+class Data: ObservableObject {
+    static let shared: Data = Data()
+    
     @Published var items = [Item]()
+    private init() { }
 }
 
+
+
 struct ContentView: View {
-    @ObservedObject var tasks = ListItem()
+    @ObservedObject var data = Data.shared
     @State private var showingAdd = false
     
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
-                Text("Задач на сегодня: \(tasks.items.filter { $0.isDone == false }.count)")
+                Text("Задач на сегодня: \(data.items.filter { $0.isDone == false }.count)")
                     .padding(.leading)
                 List {
-                    ForEach(Array(tasks.items.enumerated()), id: \.offset) { i, e in
+                    ForEach(Array(data.items.enumerated()), id: \.offset) { i, e in
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Задача №\(i+1)")
@@ -41,7 +46,7 @@ struct ContentView: View {
                             }
                             Spacer()
                             Button {
-                                tasks.items[i].isDone.toggle()
+                                data.items[i].isDone.toggle()
                             } label: {
                                 Image (systemName:
                                         e.isDone ? "checkmark.circle.fill" : "circle")
@@ -61,14 +66,14 @@ struct ContentView: View {
                         .font(.title2)
                     
                 }) .sheet(isPresented: $showingAdd) {
-                    AddItem(tasks: self.tasks)
+                    AddItem()
                 }
             }
         }
     }
     
     func removeItems(as offsets: IndexSet) {
-        tasks.items.remove(atOffsets: offsets)
+        data.items.remove(atOffsets: offsets)
     }
 }
 
