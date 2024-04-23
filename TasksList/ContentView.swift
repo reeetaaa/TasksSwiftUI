@@ -17,17 +17,15 @@ class Item: Identifiable, Hashable {
     var description: String
     var isDone: Bool
     
-    init(id: UUID = UUID(), task: String, description: String, isDone: Bool) {
-        self.id = id
+    init(task: String, description: String) {
+        self.id = UUID()
         self.task = task
         self.description = description
-        self.isDone = isDone
+        self.isDone = false
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-        hasher.combine(task)
-        hasher.combine(description)
     }
 }
 
