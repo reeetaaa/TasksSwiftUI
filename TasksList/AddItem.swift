@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddItem: View {
-    @ObservedObject var data = Data.shared
+    @ObservedObject var tasks = Data.shared
     @State private var task = ""
     @State private var description = ""
     
@@ -24,7 +24,7 @@ struct AddItem: View {
                 .navigationBarItems(trailing:
                     Button("Добавить задачу"){
                             let i = Item(task: self.task, description: self.description, isDone: false)
-                            self.data.items.append(i)
+                            self.tasks.items.append(i)
                             self.presentationMode.wrappedValue.dismiss()
                     }.foregroundColor(.green)
                 )

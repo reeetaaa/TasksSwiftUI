@@ -24,16 +24,16 @@ class Data: ObservableObject {
 
 
 struct ContentView: View {
-    @ObservedObject var data = Data.shared
+    @ObservedObject var tasks = Data.shared
     @State private var showingAdd = false
     
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
-                Text("Задач на сегодня: \(data.items.filter { $0.isDone == false }.count)")
+                Text("Задач на сегодня: \(tasks.items.filter { $0.isDone == false }.count)")
                     .padding(.leading)
                 List {
-                    ForEach(Array(data.items.enumerated()), id: \.offset) { i, e in
+                    ForEach(Array(tasks.items.enumerated()), id: \.offset) { i, e in
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Задача №\(i+1)")
@@ -46,7 +46,7 @@ struct ContentView: View {
                             }
                             Spacer()
                             Button {
-                                data.items[i].isDone.toggle()
+                                tasks.items[i].isDone.toggle()
                             } label: {
                                 Image (systemName:
                                         e.isDone ? "checkmark.circle.fill" : "circle")
@@ -73,7 +73,7 @@ struct ContentView: View {
     }
     
     func removeItems(as offsets: IndexSet) {
-        data.items.remove(atOffsets: offsets)
+        tasks.items.remove(atOffsets: offsets)
     }
 }
 
