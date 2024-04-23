@@ -23,7 +23,7 @@ struct AddItem: View {
             }   .navigationBarTitle("Новая задача")
                 .navigationBarItems(trailing:
                     Button("Добавить задачу"){
-                            let i = Item(task: self.task, description: self.description, isDone: false)
+                            let i = Item(task: self.task, description: self.description)
                             self.tasks.items.append(i)
                             self.presentationMode.wrappedValue.dismiss()
                     }.foregroundColor(.green)

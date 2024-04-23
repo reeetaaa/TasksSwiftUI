@@ -7,11 +7,26 @@
 
 import SwiftUI
 
-struct Item: Identifiable, Hashable {
+class Item: Identifiable, Hashable {
+    static func == (lhs: Item, rhs: Item) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var id = UUID()
     var task: String
     var description: String
     var isDone: Bool
+    
+    init(task: String, description: String) {
+        self.id = UUID()
+        self.task = task
+        self.description = description
+        self.isDone = false
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 class Data: ObservableObject {
@@ -33,23 +48,23 @@ struct ContentView: View {
                 Text("Задач на сегодня: \(tasks.items.filter { $0.isDone == false }.count)")
                     .padding(.leading)
                 List {
-                    ForEach(Array(tasks.items.enumerated()), id: \.offset) { i, e in
+                    ForEach(tasks.items, id: \.self) { i in
                         HStack{
                             VStack(alignment: .leading){
-                                Text("Задача №\(i+1)")
+                                Text("Задача №\(1)")
                                     
-                                Text(e.task)
+                                Text(i.task)
                                     .font(.title2)
                                     .bold()
-                                Text(e.description)
+                                Text(i.description)
                                     .font(.footnote)
                             }
                             Spacer()
                             Button {
-                                tasks.items[i].isDone.toggle()
+                                i.isDone.toggle()
                             } label: {
                                 Image (systemName:
-                                        e.isDone ? "checkmark.circle.fill" : "circle")
+                                        i.isDone ? "checkmark.circle.fill" : "circle")
                                 .foregroundColor(.green)
                             }
                         }
