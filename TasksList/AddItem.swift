@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddItem: View {
-    @ObservedObject var tasks = ListItem()
+    @ObservedObject var tasks = Data.shared
     @State private var task = ""
     @State private var description = ""
     

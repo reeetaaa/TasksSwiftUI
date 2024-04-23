@@ -14,12 +14,17 @@ struct Item: Identifiable, Hashable {
     var isDone: Bool
 }
 
-class ListItem: ObservableObject {
+class Data: ObservableObject {
+    static let shared: Data = Data()
+    
     @Published var items = [Item]()
+    private init() { }
 }
 
+
+
 struct ContentView: View {
-    @ObservedObject var tasks = ListItem()
+    @ObservedObject var tasks = Data.shared
     @State private var showingAdd = false
     
     var body: some View {
@@ -61,7 +66,7 @@ struct ContentView: View {
                         .font(.title2)
                     
                 }) .sheet(isPresented: $showingAdd) {
-                    AddItem(tasks: self.tasks)
+                    AddItem()
                 }
             }
         }
